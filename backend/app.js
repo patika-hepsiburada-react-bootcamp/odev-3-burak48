@@ -13,6 +13,11 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("Connected");
+
+  socket.on("new-vote", (vote) => {
+    console.log("New Vote: ", vote.selectedOption);
+  });
+
   socket.on("disconnet", () => console.log("Disconnected"));
 });
 

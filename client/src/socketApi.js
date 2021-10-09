@@ -15,3 +15,10 @@ export const connectSocket = () => {
     console.error("Connection Failed");
   });
 };
+
+export const sendMessage = (topic, data) => {
+  if (!socket) {
+    return false;
+  }
+  socket.emit(topic, data);
+};

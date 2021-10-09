@@ -1,25 +1,39 @@
-import React from "react";
+import { useState } from "react";
+import { sendMessage } from "../socketApi";
 
 function Options() {
+  const [selectedOption, setSelectedOption] = useState();
+
+  const handleSelect = ({ target }) => setSelectedOption(target.value);
+  const handleSubmit = () => {
+    sendMessage("new-vote", { selectedOption });
+  };
   return (
     <div id="options">
+      <h1>{selectedOption}</h1>
       <label htmlFor="">
-        <input type="radio" name="os" />
+        <input type="radio" name="os" value="windows" onChange={handleSelect} />
         Windows
       </label>
       <label htmlFor="">
-        <input type="radio" name="os" defaultChecked />
+        <input
+          type="radio"
+          name="os"
+          value="macos"
+          defaultChecked
+          onChange={handleSelect}
+        />
         MacOS
       </label>
       <label htmlFor="">
-        <input type="radio" name="os" />
+        <input type="radio" name="os" value="linux" onChange={handleSelect} />
         Linux
       </label>
       <label htmlFor="">
-        <input type="radio" name="os" />
+        <input type="radio" name="os" value="other" onChange={handleSelect} />
         Something Else
       </label>
-      <button>Vote</button>
+      <button onClick={handleSubmit}>Vote</button>
     </div>
   );
 }
