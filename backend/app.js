@@ -7,7 +7,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const client = require("./redis");
+const Vote = require("./lib/Votes");
+
 app.get("/", (req, res) => {
+  // client.set("name", "burak");
   res.end("Vote App");
 });
 
@@ -18,12 +22,19 @@ const votes = {
   other: 0,
 };
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log("Connected");
 
   //   socket.emit("new-vote", votes);
 
+  votes.windows = Number(await client.get("windows"));
+  votes.macos = Number(await client.get("macos"));
+  votes.linux = Number(await client.get("linux"));
+  votes.other = Number(await client.get("other"));
+
   socket.on("new-vote", (vote) => {
+    // Vote.upsert("macos", 4);
+    Vote.incr(vote);
     console.log("New Vote: ", vote.selectedOption);
 
     votes[vote.selectedOption] += 1;

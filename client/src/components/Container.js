@@ -10,7 +10,7 @@ function Container() {
   useEffect(() => {
     connectSocket();
     subscribeToNewMessages((data) => setOptions(data));
-  });
+  }, [setOptions]);
 
   return (
     <div>
