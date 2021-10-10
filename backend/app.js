@@ -21,12 +21,14 @@ const votes = {
 io.on("connection", (socket) => {
   console.log("Connected");
 
+  //   socket.emit("new-vote", votes);
+
   socket.on("new-vote", (vote) => {
     console.log("New Vote: ", vote.selectedOption);
 
     votes[vote.selectedOption] += 1;
 
-    socket.emit("new-vote", votes);
+    io.emit("new-vote", votes);
   });
 
   socket.on("disconnet", () => console.log("Disconnected"));
