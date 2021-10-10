@@ -22,3 +22,12 @@ export const sendMessage = (topic, data) => {
   }
   socket.emit(topic, data);
 };
+
+export const subscribeToNewMessages = (cb) => {
+  if (!socket) {
+    return false;
+  }
+  socket.on("new-vote", (message) => {
+    cb(message);
+  });
+};

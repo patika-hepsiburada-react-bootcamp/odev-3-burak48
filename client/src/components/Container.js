@@ -1,11 +1,15 @@
 import { useEffect } from "react";
-import { connectSocket } from "../socketApi";
+import { useVote } from "../contexts/VoteContext";
+import { connectSocket, subscribeToNewMessages } from "../socketApi";
 import Options from "./Options";
 import Question from "./Question";
 
 function Container() {
+  const { setOptions } = useVote();
+
   useEffect(() => {
     connectSocket();
+    subscribeToNewMessages((data) => setOptions(data));
   });
 
   return (

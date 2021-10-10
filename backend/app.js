@@ -11,11 +11,22 @@ app.get("/", (req, res) => {
   res.end("Vote App");
 });
 
+const votes = {
+  windows: 0,
+  macos: 0,
+  linux: 0,
+  other: 0,
+};
+
 io.on("connection", (socket) => {
   console.log("Connected");
 
   socket.on("new-vote", (vote) => {
     console.log("New Vote: ", vote.selectedOption);
+
+    votes[vote.selectedOption] += 1;
+
+    socket.emit("new-vote", votes);
   });
 
   socket.on("disconnet", () => console.log("Disconnected"));
